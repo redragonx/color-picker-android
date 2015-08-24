@@ -7,9 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Rect;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,11 +27,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.dicesoft.colorpicker_android.Listeners.SeekBarOnChangeListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
-
 
 public class MainColorPickerActivity extends Activity {
 
@@ -45,16 +38,17 @@ public class MainColorPickerActivity extends Activity {
     ClipData clip;
     Window window;
     Display display;
+    MusicThread musicThread;
     int red, green, blue, seekBarLeft;
-    Rect thumbRect;
 
     AlertDialog alertDialog;
 
-    JSONObject props;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setContentView(R.layout.layout_color_picker);
@@ -87,6 +81,8 @@ public class MainColorPickerActivity extends Activity {
 
         buttonSelector = (Button)findViewById(R.id.buttonSelector);
 
+
+        musicThread = new MusicThread(this);
         SeekBarOnChangeListener seekBarOnChangeListener = new SeekBarOnChangeListener(display,
                 colorView,
                 window,
@@ -96,7 +92,8 @@ public class MainColorPickerActivity extends Activity {
                 blueSeekBar,
                 redToolTip,
                 greenToolTip,
-                blueToolTip);
+                blueToolTip,
+                musicThread);
         redSeekBar.setOnSeekBarChangeListener(seekBarOnChangeListener);
         greenSeekBar.setOnSeekBarChangeListener(seekBarOnChangeListener);
         blueSeekBar.setOnSeekBarChangeListener(seekBarOnChangeListener);
@@ -201,6 +198,13 @@ public class MainColorPickerActivity extends Activity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+
+        musicThread.interrupt();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -222,6 +226,8 @@ public class MainColorPickerActivity extends Activity {
         catch (NullPointerException e) {
             //do nothing
         }
+
+        musicThread.interrupt();
 
     }
 }

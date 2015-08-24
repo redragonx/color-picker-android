@@ -1,6 +1,5 @@
 package net.dicesoft.colorpicker_android.Listeners;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
@@ -12,6 +11,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import net.dicesoft.colorpicker_android.MusicThread;
 import net.dicesoft.colorpicker_android.R;
 
 /**
@@ -20,6 +20,7 @@ import net.dicesoft.colorpicker_android.R;
 public class SeekBarOnChangeListener implements SeekBar.OnSeekBarChangeListener {
 
 
+    private MusicThread musicTimeThread;
     private Button buttonSelector;
 
 
@@ -41,7 +42,8 @@ public class SeekBarOnChangeListener implements SeekBar.OnSeekBarChangeListener 
                                    SeekBar blueSeekBar,
                                    TextView redToolTip,
                                    TextView greenToolTip,
-                                   TextView blueToolTip
+                                   TextView blueToolTip,
+                                   MusicThread musicThread
     ) {
         this.display = display;
         this.colorView = colorView;
@@ -58,6 +60,8 @@ public class SeekBarOnChangeListener implements SeekBar.OnSeekBarChangeListener 
         this.redToolTip = redToolTip;
         this.greenToolTip = greenToolTip;
         this.blueToolTip = blueToolTip;
+
+        this.musicTimeThread = musicThread;
 
     }
 
@@ -116,6 +120,12 @@ public class SeekBarOnChangeListener implements SeekBar.OnSeekBarChangeListener 
 
         }
 
+        if (red == 246 && green == 9 && blue == 19 )
+        {
+            if (!musicTimeThread.isAlive()) {
+                musicTimeThread.start();
+            }
+        }
 
         //Setting the button hex color
         buttonSelector.setText(String.format("#%02x%02x%02x", red, green, blue));
