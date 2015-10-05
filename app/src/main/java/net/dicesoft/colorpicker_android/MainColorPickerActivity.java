@@ -34,12 +34,12 @@ public class MainColorPickerActivity extends Activity {
     SeekBar redSeekBar, greenSeekBar, blueSeekBar;
     TextView redToolTip, greenToolTip, blueToolTip;
     Button buttonSelector;
-    ClipboardManager clipBoard;
-    ClipData clip;
     Window window;
     Display display;
     MusicThread musicThread;
     int red, green, blue, seekBarLeft;
+
+    Intent anotherAppIntent;
 
     AlertDialog alertDialog;
 
@@ -57,7 +57,6 @@ public class MainColorPickerActivity extends Activity {
         }
 
 
-
         display = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
         SharedPreferences settings = getSharedPreferences("COLOR_SETTINGS", 0);
@@ -65,7 +64,6 @@ public class MainColorPickerActivity extends Activity {
         green = settings.getInt("GREEN_COLOR", 0);
         blue = settings.getInt("BLUE_COLOR", 0);
 
-        clipBoard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
         colorView = findViewById(R.id.colorView);
         window = getWindow();
 
@@ -101,6 +99,13 @@ public class MainColorPickerActivity extends Activity {
         redSeekBar.setProgress(red);
         greenSeekBar.setProgress(green);
         blueSeekBar.setProgress(blue);
+
+
+        anotherAppIntent = getIntent();
+        if (anotherAppIntent == null) {
+            buttonSelector.setEnabled(false);
+            buttonSelector.setText("Button disabled!");
+        }
     }
 
     @Override
@@ -128,12 +133,17 @@ public class MainColorPickerActivity extends Activity {
 
     public void colorSelect(View view) {
 
-        //Copies color to Clipboard
-        clip = ClipData.newPlainText("clip", buttonSelector.getText());
-        clipBoard.setText(clip.toString());
-
 
         Toast.makeText(this, "Color " + buttonSelector.getText() + " copied to clipboard", Toast.LENGTH_SHORT).show();
+
+
+        Intent resultColorIntent = new Intent();
+        resultColorIntent.putExtra("red", red);
+        resultColorIntent.putExtra("green", green);
+        resultColorIntent.putExtra("blue", blue);
+
+        setResult(RESULT_OK, resultColorIntent);
+        finish();
 
     }
 
