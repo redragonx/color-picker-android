@@ -134,13 +134,13 @@ public class MainColorPickerActivity extends Activity {
     public void colorSelect(View view) {
 
 
-        Toast.makeText(this, "Color " + buttonSelector.getText() + " copied to clipboard", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Color " + buttonSelector.getText() + " copied to the color blender app! ", Toast.LENGTH_SHORT).show();
 
 
         Intent resultColorIntent = new Intent();
-        resultColorIntent.putExtra("red", red);
-        resultColorIntent.putExtra("green", green);
-        resultColorIntent.putExtra("blue", blue);
+        resultColorIntent.putExtra("red", redSeekBar.getProgress());
+        resultColorIntent.putExtra("green", greenSeekBar.getProgress());
+        resultColorIntent.putExtra("blue", blueSeekBar.getProgress());
 
         setResult(RESULT_OK, resultColorIntent);
         finish();

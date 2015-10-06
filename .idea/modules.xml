@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/DataMain/srcode/ColorPicker-Android/ColorPicker-Android.iml" filepath="$USER_HOME$/DataMain/srcode/ColorPicker-Android/ColorPicker-Android.iml" />
-      <module fileurl="file://$USER_HOME$/DataMain/srcode/ColorPicker-Android/app/app.iml" filepath="$USER_HOME$/DataMain/srcode/ColorPicker-Android/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/color-picker-android.iml" filepath="$PROJECT_DIR$/color-picker-android.iml" />
     </modules>
   </component>
 </project>
